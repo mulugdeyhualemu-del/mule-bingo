@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#11131b">
+<title>MULE BINGO | መዝናኛ ክበብ</title>
+<style>
+:root{--bg:#11131b;--panel:#202432;--gold:#e8bd58;--muted:#aab0c0;--green:#35d58a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#29253a,#11131b 55%);color:#f7f5ef;font-family:system-ui,Arial,sans-serif;padding:18px}
+main{max-width:520px;margin:auto}.brand{text-align:center;padding:18px 8px 20px}.logo{width:66px;height:66px;border-radius:20px;background:linear-gradient(135deg,#ffcf70,#df8d36);display:grid;place-items:center;color:#201a12;font-size:25px;font-weight:900;margin:auto auto 10px;box-shadow:0 8px 30px #d99a3b44}
+h1{margin:0;color:var(--gold);letter-spacing:2px;font-size:29px}.sub{color:var(--muted);margin-top:5px}.panel{background:#202432eF;border:1px solid #42465a;border-radius:18px;padding:16px;margin:13px 0;box-shadow:0 12px 35px #0003}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+button{border:0;border-radius:12px;padding:12px 16px;font-weight:800;font-size:15px;cursor:pointer}
+.primary{background:linear-gradient(135deg,#f4ca68,#d99a37);color:#211a10}.secondary{background:#343b50;color:#fff}.green{background:var(--green);color:#10251a}
+button:disabled{opacity:.45;cursor:not-allowed}.hint{font-size:13px;color:var(--muted);line-height:1.5}
+.ball{font-size:38px;font-weight:900;color:var(--gold);text-align:center;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.cell{background:#343b50;border:1px solid #505971;border-radius:9px;min-height:52px;display:grid;place-items:center;font-size:19px;font-weight:800;color:#fff;cursor:pointer}
+.head{background:#b98535;color:#201a10;min-height:38px}.marked{background:#247d5b;border-color:#53e6a5}.free{background:#66512a;color:#ffe3a0}
+#called{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.chip{background:#343b50;padding:6px 9px;border-radius:20px;font-size:13px}
+footer{text-align:center;color:#858b9c;font-size:12px;padding:16px}
+</style>
+</head>
+<body>
+<main>
+<header class="brand">
+ <div class="logo">MB</div>
+ <h1>MULE BINGO</h1>
+ <div class="sub">መዝናኛ ክበብ · Free-play demo</div>
+</header>
+<section class="panel">
+ <div class="row"><strong>Game controls</strong><span class="hint" id="count">0 / 75 called</span></div>
+ <div class="ball" id="current">Ready?</div>
+ <div class="row">
+  <button class="primary" id="draw">Call next number</button>
+  <button class="secondary" id="new">New card</button>
+  <button class="secondary" id="reset">New game</button>
+ </div>
+ <div class="hint" style="margin-top:10px">Demo mode: numbers are drawn randomly on this device. No payments, betting or cash prizes.</div>
+</section>
+<section class="panel">
+ <div class="row"><strong>Your bingo card</strong><span class="hint">Tap a square to mark it</span></div>
+ <div class="grid" id="card"></div>
+ <div class="row" style="margin-top:12px">
+  <button class="green" id="check">Check bingo</button>
+  <span class="hint" id="status" aria-live="polite">Good luck!</span>
+ </div>
+</section>
+<section class="panel">
+ <strong>Numbers called</strong>
+ <div id="called"><span class="hint">No numbers yet.</span></div>
+</section>
+<footer>MULE BINGO · Practice game only</footer>
+</main>
+<script>
+const cols=[['B',1,15],['I',16,30],['N',31,45],['G',46,60],['O',61,75]];
+let card=[],marked=new Set([12]),drawn=[];
+const $=id=>document.getElementById(id);
+function sample(a,b,n){let x=[];for(let i=a;i<=b;i++)x.push(i);for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x.slice(0,n)}
+function makeCard(){card=[];for(let c=0;c<5;c++){let nums=sample(cols[c][1],cols[c][2],5);for(let r=0;r<5;r++)card[r*5+c]=nums[r]}card[12]='FREE';marked=new Set([12]);render()}
+function render(){
+ const el=$('card');el.innerHTML='';
+ ['B','I','N','G','O'].forEach(v=>{let d=document.createElement('div');d.className='cell head';d.textContent=v;el.append(d)});
+ for(let i=0;i<25;i++){let d=document.createElement('button');d.className='cell'+(marked.has(i)?' marked':'')+(i===12?' free':'');d.textContent=card[i];d.setAttribute('aria-label',`Cell ${card[i]}`);d.onclick=()=>{if(i!==12){marked.has(i)?marked.delete(i):marked.add(i);render()}};el.append(d)}
+}
+function draw(){if(drawn.length>=75)return;let remain=[];for(let n=1;n<=75;n++)if(!drawn.includes(n))remain.push(n);let n=remain[Math.floor(Math.random()*remain.length)];drawn.push(n);let c=n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O';$('current').textContent=c+'-'+n;$('count').textContent=drawn.length+' / 75 called';$('called').innerHTML='';[...drawn].reverse().forEach(v=>{let s=document.createElement('span');s.className='chip';s.textContent=(v<=15?'B':v<=30?'I':v<=45?'N':v<=60?'G':'O')+'-'+v;$('called').append(s)})}
+function hasBingo(){for(let r=0;r<5;r++)if([...Array(5)].every((_,c)=>marked.has(r*5+c)))return true;for(let c=0;c<5;c++)if([...Array(5)].every((_,r)=>marked.has(r*5+c)))return true;if([...Array(5)].every((_,i)=>marked.has(i*5+i)))return true;if([...Array(5)].every((_,i)=>marked.has(i*5+4-i)))return true;return false}
+$('draw').onclick=draw;$('new').onclick=makeCard;$('reset').onclick=()=>{drawn=[];$('current').textContent='Ready?';$('count').textContent='0 / 75 called';$('called').innerHTML='<span class="hint">No numbers yet.</span>';$('status').textContent='New game started.';makeCard()};$('check').onclick=()=>{$('status').textContent=hasBingo()?'BINGO! You completed a line!':'Not yet — keep playing.'};
+makeCard();
+</script>
+</body></html>
