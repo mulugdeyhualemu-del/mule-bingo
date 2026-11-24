@@ -100,3 +100,40 @@ $('draw').onclick=draw;$('new').onclick=makeCard;$('reset').onclick=()=>{drawn=[
 makeCard();
 </script>
 </body></html>
+<section class="game">
+  <h2>🎱 MULE BINGO</h2>
+  <p>Free-to-play Bingo</p>
+  <div id="bingoNumber">Press Start</div>
+  <button onclick="startBingo()">Start Bingo</button>
+  <button onclick="resetBingo()">Reset</button>
+</section>
+
+<script>
+let bingoNumbers = [];
+let bingoTimer;
+
+function startBingo() {
+  clearInterval(bingoTimer);
+  bingoNumbers = [];
+  document.getElementById("bingoNumber").textContent = "Ready!";
+  bingoTimer = setInterval(() => {
+    if (bingoNumbers.length >= 75) {
+      clearInterval(bingoTimer);
+      document.getElementById("bingoNumber").textContent = "Game Over";
+      return;
+    }
+    let number;
+    do {
+      number = Math.floor(Math.random() * 75) + 1;
+    } while (bingoNumbers.includes(number));
+    bingoNumbers.push(number);
+    document.getElementById("bingoNumber").textContent = number;
+  }, 1500);
+}
+
+function resetBingo() {
+  clearInterval(bingoTimer);
+  bingoNumbers = [];
+  document.getElementById("bingoNumber").textContent = "Press Start";
+}
+</script>
