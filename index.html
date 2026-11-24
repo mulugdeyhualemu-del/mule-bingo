@@ -42,7 +42,10 @@ button:disabled{opacity:.45;cursor:not-allowed}.hint{font-size:13px;color:var(--
 .head{background:#b98535;color:#201a10;min-height:38px}.marked{background:#247d5b;border-color:#53e6a5}.free{background:#66512a;color:#ffe3a0}
 #called{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.chip{background:#343b50;padding:6px 9px;border-radius:20px;font-size:13px}
 footer{text-align:center;color:#858b9c;font-size:12px;padding:16px}
-</style>
+</style>.bingo-board button.marked {
+  background: #20a060;
+  color: white;
+}
 </head>
 <body>
 <main>
@@ -188,4 +191,8 @@ function resetBingo() {
   bingoNumbers = [];
   document.getElementById("bingoNumber").textContent = "Press Start";
 }
-</script>
+</script>document.querySelectorAll("#bingoBoard button").forEach(button => {
+  button.addEventListener("click", () => {
+    button.classList.toggle("marked");
+  });
+});
