@@ -7,7 +7,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#11131b">
 <title>MULE BINGO | መዝናኛ ክበብ</title>
-<style>
+<style>.bingo-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.bingo-board button,
+.bingo-letter {
+  background: #d4af37;
+  color: #111;
+  padding: 15px 5px;
+  border: 0;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.bingo-board button {
+  cursor: pointer;
+}
 :root{--bg:#11131b;--panel:#202432;--gold:#e8bd58;--muted:#aab0c0;--green:#35d58a}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#29253a,#11131b 55%);color:#f7f5ef;font-family:system-ui,Arial,sans-serif;padding:18px}
 main{max-width:520px;margin:auto}.brand{text-align:center;padding:18px 8px 20px}.logo{width:66px;height:66px;border-radius:20px;background:linear-gradient(135deg,#ffcf70,#df8d36);display:grid;place-items:center;color:#201a12;font-size:25px;font-weight:900;margin:auto auto 10px;box-shadow:0 8px 30px #d99a3b44}
@@ -32,9 +52,41 @@ footer{text-align:center;color:#858b9c;font-size:12px;padding:16px}
  <div class="sub">መዝናኛ ክበብ · Free-play demo</div>
 </header>
 <section class="panel"><section class="welcome">
-  <h2>Welcome to MULE!</h2><h2>🎮 GAME LOBBY</h2><div class="games">
+  <h2>Welcome to MULE!</h2><h2>🎮 GAME LOBBY</h2><div class="games"><div class="bingo-board">
+  <div class="bingo-letter">B</div>
+  <div class="bingo-letter">I</div>
+  <div class="bingo-letter">N</div>
+  <div class="bingo-letter">G</div>
+  <div class="bingo-letter">O</div>
+</div>
   <div class="game">
-    <div class="emoji">🎱</div>
+    <div class="emoji">🎱</div><div class="bingo-board" id="bingoBoard">
+  <button>B1</button>
+  <button>I1</button>
+  <button>N1</button>
+  <button>G1</button>
+  <button>O1</button>
+  <button>B2</button>
+  <button>I2</button>
+  <button>N2</button>
+  <button>G2</button>
+  <button>O2</button>
+  <button>B3</button>
+  <button>I3</button>
+  <button>FREE</button>
+  <button>G3</button>
+  <button>O3</button>
+  <button>B4</button>
+  <button>I4</button>
+  <button>N4</button>
+  <button>G4</button>
+  <button>O4</button>
+  <button>B5</button>
+  <button>I5</button>
+  <button>N5</button>
+  <button>G5</button>
+  <button>O5</button>
+</div>
     <h3>Bingo</h3>
     <p>Coming soon</p>
   </div>
